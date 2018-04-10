@@ -12,7 +12,7 @@
 			
 			public function Login($email, $mdp) {
 				
-				$mdp_crypt = sha1(strtoupper($email) . ":" . strtoupper($mdp)); // Le mdp est $email + : + $mdp
+				$mdp_crypt = bin2hex(strrev(hex2bin(strtoupper(hash("sha256",strtoupper(hash("sha256", strtoupper($email)).":".strtoupper($password)))))));
 				$email = htmlentities($this->_BDD->ReturnAuth()->quote($email)); // 
 				$req = $this->_BDD->ReturnAuth()->query("SELECT * FROM battlenet_accounts WHERE email=$email AND sha_pass_hash='$mdp_crypt'");
 				
