@@ -1,5 +1,5 @@
 <?php
-include_once "../conttroler/player_controller.php";
+include_once "../controller/player_controller.php";
 include_once "../class/player.php";
 include_once "../class/connect_db.php";
 
