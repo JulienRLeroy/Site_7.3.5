@@ -1,5 +1,4 @@
 <?php 
-
     
     class Player_controler {
         
@@ -13,10 +12,9 @@
 			
 			public function Register($username, $email, $mdp) {
 				
-				$mdp_crypt = $this->_BDD->ReturnAuth()->quote(bin2hex(strrev(hex2bin(strtoupper(hash("sha256",strtoupper(hash("sha256", strtoupper($email)).":".strtoupper($mdp))))))));
+				$mdp_crypt = $this->_BDD->ReturnAuth()->quote(sha1(strtoupper($email).':'.strtoupper($mdp)));
 				$email = htmlentities($this->_BDD->ReturnAuth()->quote($email)); 
 				$username = htmlentities($this->_BDD->ReturnAuth()->quote($username)); 
-
 				$insertBnetAcc = $this->_BDD->ReturnAuth()->query("INSERT INTO battlenet_accounts SET email=$email, sha_pass_hash=$mdp_crypt");
 				$SelectIdBnetAcc = $this->_BDD->ReturnAuth()->query("SELECT id FROM battlenet_accounts WHERE email=$email");
 				
