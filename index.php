@@ -46,6 +46,9 @@
 						<div class="col-md-12 form-group">
 							<input type="password" class="form-control" placeholder="Entrer à nouveau le mot de passe" name="pass_secure" required>
 						</div>
+						<div class="col-md-12 form-group">
+							<input type="text" class="form-control" placeholder="Entrer un nom de compte" name="username" required>
+						</div>
 						<div class="col-md-12 form-group center">
 							<input type="submit" name="sub_input" value="S'inscrire">
 						</div>

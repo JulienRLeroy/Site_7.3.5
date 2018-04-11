@@ -10,33 +10,21 @@
 				$this->_BDD = new DB();
 			}
 			
-			public function Login($email, $mdp) {
+			
+			public function Register($username, $email, $mdp) {
 				
-				$mdp_crypt = bin2hex(strrev(hex2bin(strtoupper(hash("sha256",strtoupper(hash("sha256", strtoupper($email)).":".strtoupper($password)))))));
-				$email = htmlentities($this->_BDD->ReturnAuth()->quote($email)); // 
-				$req = $this->_BDD->ReturnAuth()->query("SELECT * FROM battlenet_accounts WHERE email=$email AND sha_pass_hash='$mdp_crypt'");
+				$mdp_crypt = $this->_BDD->ReturnAuth()->quote(bin2hex(strrev(hex2bin(strtoupper(hash("sha256",strtoupper(hash("sha256", strtoupper($email)).":".strtoupper($mdp))))))));
+				$email = htmlentities($this->_BDD->ReturnAuth()->quote($email)); 
+				$username = htmlentities($this->_BDD->ReturnAuth()->quote($username)); 
+
+				$insertBnetAcc = $this->_BDD->ReturnAuth()->query("INSERT INTO battlenet_accounts SET email=$email, sha_pass_hash=$mdp_crypt");
+				$SelectIdBnetAcc = $this->_BDD->ReturnAuth()->query("SELECT id FROM battlenet_accounts WHERE email=$email");
 				
-				if($tab = $req ->fetch()) {
-				   
-					   $_SESSION['user'] = new Player($tab['username'], $tab['email'],$tab['id'], $tab['last_ip']); // COPIE DE LA CLASS PLAYER
-					   return true;
-			   
+				if($tab = $SelectIdBnetAcc ->fetch()) {			   
+					$req2 = $this->_BDD->ReturnAuth()->query("INSERT INTO account SET username=$username, sha_pass_hash=$mdp_crypt, email=$email, battlenet_account=".$tab['id'].", battlenet_index=".$tab['id']."");
+					return true;
 				}
 				
-				return false;
-			}
-			
-			public function Register($email, $mdp) {
-				
-			   $mdp_crypt = $this->_BDD->ReturnAuth()->quote(sha1(strtoupper($email) .":". strtoupper($mdp))); // Le mdp est $email + : + $mdp
-			   $email = htmlentities($this->_BDD->ReturnAuth()->quote($email)); 
-			   
-			   $req = $this->_BDD->ReturnAuth()->query("INSERT INTO battlenet_accounts SET email=$email, sha_pass_hash=$mdp_crypt");
-			   if($req){
-				   return true;
-			   } 
-			   
-			   return false;
 			}
 			
 		
